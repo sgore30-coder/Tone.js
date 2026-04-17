@@ -1,0 +1,57 @@
+// make sure Tone.js is loaded before this
+
+const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+
+// tempo
+Tone.Transport.bpm.value = 70;
+
+// helper to play notes
+function playMelody(time, notes) {
+  notes.forEach(n => {
+    synth.triggerAttackRelease(n.note, n.duration, time + n.time);
+  });
+}
+
+// 🌿 1. "Ashes" (simplified)
+const ashes = [
+  { time: 0, note: "C4", duration: "4n" },
+  { time: 0.5, note: "D4", duration: "4n" },
+  { time: 1, note: "E4", duration: "4n" },
+  { time: 1.5, note: "C4", duration: "2n" }
+];
+
+// ✝️ 2. "Lord, Who Throughout These Forty Days"
+const fortyDays = [
+  { time: 0, note: "G3", duration: "4n" },
+  { time: 0.5, note: "A3", duration: "4n" },
+  { time: 1, note: "B3", duration: "4n" },
+  { time: 1.5, note: "G3", duration: "2n" }
+];
+
+// 🕊️ 3. "Were You There"
+const wereYouThere = [
+  { time: 0, note: "E4", duration: "4n" },
+  { time: 0.5, note: "D4", duration: "4n" },
+  { time: 1, note: "C4", duration: "4n" },
+  { time: 1.5, note: "A3", duration: "2n" }
+];
+
+// schedule songs
+Tone.Transport.schedule((time) => {
+  playMelody(time, ashes);
+}, 0);
+
+Tone.Transport.schedule((time) => {
+  playMelody(time, fortyDays);
+}, 4);
+
+Tone.Transport.schedule((time) => {
+  playMelody(time, wereYouThere);
+}, 8);
+
+// start audio (must be triggered by user click)
+document.body.addEventListener("click", async () => {
+  await Tone.start();
+  Tone.Transport.start();
+  console.log("Playing Lent medley 🎶");
+});
