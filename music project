@@ -36,7 +36,7 @@ const wereYouThere = [
   { time: 1.5, note: "A3", duration: "2n" }
 ];
 
-// schedule songs
+// schedule songs with repeats
 Tone.Transport.schedule((time) => {
   playMelody(time, ashes);
 }, 0);
@@ -48,6 +48,11 @@ Tone.Transport.schedule((time) => {
 Tone.Transport.schedule((time) => {
   playMelody(time, wereYouThere);
 }, 8);
+
+// Set loop to repeat every 12 seconds (adjust as needed)
+Tone.Transport.loopStart = 0;
+Tone.Transport.loopEnd = "12";
+Tone.Transport.loop = true;
 
 // start audio (must be triggered by user click)
 document.body.addEventListener("click", async () => {
