@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tone.js Lent Medley</title>
+  <!-- Load Tone.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+</head>
+<body>
+  <h1>🎵 Click anywhere to hear the Lent medley</h1>
+  <p>(Make sure your volume is on!)</p>
+
+  <script>
+    // Your code here
+    const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+
+    Tone.Transport.bpm.value = 70;
+
+    function playMelody(time, notes) {
+      notes.forEach(n => {
+        synth.triggerAttackRelease(n.note, n.duration, time + n.time);
+      });
+    }
+
+    const ashes = [
+      { time: 0, note: "C4", duration: "4n" },
+      { time: 0.5, note: "D4", duration: "4n" },
+      { time: 1, note: "E4", duration: "4n" },
+      { time: 1.5, note: "C4", duration: "2n" }
+    ];
+
+    const fortyDays = [
+      { time: 0, note: "G3", duration: "4n" },
+      { time: 0.5, note: "A3", duration: "4n" },
+      { time: 1, note: "B3", duration: "4n" },
+      { time: 1.5, note: "G3", duration: "2n" }
+    ];
+
+    const wereYouThere = [
+      { time: 0, note: "E4", duration: "4n" },
+      { time: 0.5, note: "D4", duration: "4n" },
+      { time: 1, note: "C4", duration: "4n" },
+      { time: 1.5, note: "A3", duration: "2n" }
+    ];
+
+    Tone.Transport.schedule((time) => {
+      playMelody(time, ashes);
+    }, 0);
+
+    Tone.Transport.schedule((time) => {
+      playMelody(time, fortyDays);
+    }, 4);
+
+    Tone.Transport.schedule((time) => {
+      playMelody(time, wereYouThere);
+    }, 8);
+
+    Tone.Transport.loopStart = 0;
+    Tone.Transport.loopEnd = "12";
+    Tone.Transport.loop = true;
+
+    document.body.addEventListener("click", async () => {
+      await Tone.start();
+      Tone.Transport.start();
+      console.log("Playing Lent medley 🎶");
+    });
+  </script>
+</body>
+</html>
